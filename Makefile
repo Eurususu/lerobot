@@ -19,7 +19,9 @@ PYTHON_PATH := $(shell which python)
 # If uv is installed and a virtual environment exists, use it
 UV_CHECK := $(shell command -v uv)
 ifneq ($(UV_CHECK),)
-	PYTHON_PATH := $(shell .venv/bin/python)
+	# Plain string, not $(shell .venv/bin/python): executing the interpreter here starts an
+	# interactive REPL when make runs from a terminal (GNU make 4.3 $(shell) inherits the TTY).
+	PYTHON_PATH := .venv/bin/python
 endif
 
 export PATH := $(dir $(PYTHON_PATH)):$(PATH)
